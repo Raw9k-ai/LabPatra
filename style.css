@@ -523,18 +523,23 @@ body[data-view="batch"] .download-bar {
 
 @media (max-width: 900px) {
     .site-nav-inner {
-        gap: 2px;
-        padding: 0 8px;
+        gap: 1px;
+        padding: 0 4px;
     }
 
     .site-nav .long {
         display: none;
     }
 
+    .site-nav-inner {
+        overflow-x: auto;
+    }
+
     .site-nav a {
-        flex: 1;
-        padding: 8px 4px;
-        font-size: 14px;
+        flex: 1 0 auto;
+        padding: 8px 5px;
+        font-size: 13px;
         text-align: center;
+        white-space: nowrap;
     }
 }

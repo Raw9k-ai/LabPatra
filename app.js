@@ -7,11 +7,11 @@ const grid = document.getElementById('grid');
 const message = document.getElementById('message');
 const sizeSelect = document.getElementById('size');
 
-const textFields = ['title', 'subject', 'college', 'address', 'dept', 'toBody', 'byBody', 'toHeading', 'byHeading'];
+const textFields = ['title', 'subject', 'college', 'address', 'dept', 'toBody', 'byBody', 'toHeading', 'byHeading', 'ackHeading', 'ackText'];
 
 // everything the browser remembers
 const savedValues = textFields.concat(['batchList', 'batchTemplate', 'linedStyle', 'linedCount']);
-const savedChecks = ['includeIndex', 'linedHeader', 'linedNumbers'];
+const savedChecks = ['includeAck', 'includeIndex', 'linedHeader', 'linedNumbers'];
 const BATCH_MAX = 100;
 const LINED_MAX = 30;
 
@@ -61,6 +61,8 @@ function readForm() {
         byHeading: valueOf('byHeading'),
         to: linesOf('toBody'),
         by: linesOf('byBody'),
+        ackHeading: valueOf('ackHeading'),
+        ackText: document.getElementById('ackText').value,
         rows: rows,
         lined: {
             style: valueOf('linedStyle'),
@@ -78,6 +80,7 @@ function pageHeight() {
 
 function renderPage(ctx, page, design, data, height, number) {
     if (page === 'index') renderIndex(ctx, design, data, height);
+    else if (page === 'ack') renderAck(ctx, design, data, height);
     else if (page === 'lined') renderLined(ctx, design, data, height, number || 1);
     else renderCover(ctx, design, data, height);
 }
@@ -276,7 +279,7 @@ function nextTurn() {
     return new Promise(function (resolve) { setTimeout(resolve, 0); });
 }
 
-// PDF is always A4: cover, then the index (if ticked), then the writing pages
+// PDF is always A4: cover, acknowledgement and index (if ticked), then the writing pages
 async function downloadPdf() {
     const data = readForm();
     const button = document.getElementById('downloadPdf');
@@ -286,6 +289,7 @@ async function downloadPdf() {
     button.disabled = true;
     try {
         const pages = [await pageToJpeg('cover', data)];
+        if (checked('includeAck')) pages.push(await pageToJpeg('ack', data));
         if (checked('includeIndex')) pages.push(await pageToJpeg('index', data));
 
         let shared = null;   // without page numbers every writing page is identical
@@ -358,6 +362,7 @@ async function downloadBatch() {
 
     const base = readForm();
     const withIndex = checked('includeIndex');
+    const withAck = checked('includeAck');
     const button = document.getElementById('downloadBatch');
     const pages = [];
     let indexPage = null;
@@ -370,6 +375,7 @@ async function downloadBatch() {
 
             const data = Object.assign({}, base, { by: linesFor(students[i]) });
             pages.push(await pageToJpeg('cover', data));
+            if (withAck) pages.push(await pageToJpeg('ack', data));   // carries each student's name
 
             if (withIndex) {
                 indexPage = indexPage || await pageToJpeg('index', base);
@@ -377,8 +383,9 @@ async function downloadBatch() {
             }
         }
         saveBlob(buildPdf(pages), slugOf(base.title) + '-batch.pdf');
+        const extras = (withAck ? 'acknowledgement' : '') + (withAck && withIndex ? ' and ' : '') + (withIndex ? 'index page' : '');
         batchStatus.textContent = 'Done: ' + students.length + (students.length === 1 ? ' cover' : ' covers') +
-            (withIndex ? ', each followed by the index page.' : '.');
+            (extras ? ', each followed by the ' + extras + '.' : '.');
     } catch (e) {
         batchStatus.textContent = 'Could not create the PDF. Try fewer students at a time.';
     }
@@ -433,7 +440,7 @@ function buildRows() {
 }
 
 // which page each menu item previews
-const VIEW_PAGE = { cover: 'cover', index: 'index', writing: 'lined', batch: 'cover' };
+const VIEW_PAGE = { cover: 'cover', ack: 'ack', index: 'index', writing: 'lined', batch: 'cover' };
 
 function showView(name, scrollToTop) {
     if (!VIEW_PAGE[name]) name = 'cover';
@@ -600,6 +607,7 @@ document.getElementById('photoClear').addEventListener('click', function () {
 document.getElementById('download').addEventListener('click', downloadPng);
 document.getElementById('downloadPdf').addEventListener('click', downloadPdf);
 document.getElementById('includeIndex').addEventListener('change', scheduleSave);
+document.getElementById('includeAck').addEventListener('change', scheduleSave);
 document.getElementById('linedCount').addEventListener('input', scheduleSave);
 
 // redraw the preview when a writing-page option changes

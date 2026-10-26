@@ -16,6 +16,7 @@ Choose a layout, customize the details, explore different color palettes, previe
 - 📥 Download Your Design: Export your completed cover page as a PNG.
 - 📄 PDF Export: Download an A4 PDF with the cover and the index page.
 - 🗂️ Experiment Index Page: A matching index table (No., Title, Date, Page, Remark) in the same palette as your cover.
+- 🙏 Acknowledgement Page: Editable text that fills in your teacher, subject, department, and college, with a date and signature block.
 - 📝 Writing Pages: Ruled or graph pages with an optional Experiment No./Date/Aim header and page numbers, added after the index in the PDF.
 - 👥 Batch Mode: Paste or load a CSV of students and download one PDF with a cover page for each (up to 100).
 - 💾 Saved On Your Device: Your details, design, and logo are remembered in your browser. Nothing is uploaded.
@@ -73,6 +74,7 @@ LabPatra/
 ├── helpers.js          # Drawing and utility functions
 ├── layouts.js          # Cover page layout designs
 ├── index-page.js        # Experiment index page layout
+├── ack-page.js          # Acknowledgement page
 ├── lined-page.js        # Ruled / graph writing pages
 ├── pdf.js               # Minimal PDF writer (no libraries)
 ├── logo.js             # Default college logo

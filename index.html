@@ -16,6 +16,7 @@
 <nav class="site-nav" aria-label="Sections">
     <div class="site-nav-inner">
         <a href="#cover" data-view="cover">Front<span class="long"> page</span></a>
+        <a href="#ack" data-view="ack">Acknowledgement</a>
         <a href="#index" data-view="index">Index</a>
         <a href="#writing" data-view="writing">Writing<span class="long"> pages</span></a>
         <a href="#batch" data-view="batch">Batch</a>
@@ -126,7 +127,27 @@ BATCH- (2026-2030)</textarea>
             </div>
         </details>
 
-        <p class="next-step">Need more pages? Use <a href="#index">Index</a>, <a href="#writing">Writing pages</a> or <a href="#batch">Batch</a> in the menu above.</p>
+        <p class="next-step">Need more pages? Use <a href="#ack">Acknowledgement</a>, <a href="#index">Index</a>, <a href="#writing">Writing pages</a> or <a href="#batch">Batch</a> in the menu above.</p>
+        </div>
+
+        <div class="view" data-view="ack">
+        <div class="heading-row">
+            <h2>Acknowledgement</h2>
+        </div>
+        <label class="check"><input type="checkbox" id="includeAck"> Include in PDF (right after the front page)</label>
+        <div class="field">
+            <label for="ackHeading">Heading</label>
+            <input type="text" id="ackHeading" value="Acknowledgement" autocomplete="off">
+        </div>
+        <div class="field">
+            <label for="ackText">Text</label>
+            <textarea id="ackText" rows="12">I would like to express my sincere gratitude to {teacher} for the guidance, encouragement and valuable feedback given throughout the {subject} laboratory course.
+
+I am also thankful to the Head of the Department and the faculty of {dept}, {college}, for providing the facilities needed to carry out these experiments.
+
+Finally, I thank my parents and friends for their constant support and motivation.</textarea>
+            <p class="hint">A blank line starts a new paragraph. {teacher}, {subject}, {dept} and {college} are filled in from the front page. The signature shows the first line of "Submitted by".</p>
+        </div>
         </div>
 
         <div class="view" data-view="index">
@@ -207,6 +228,7 @@ BATCH- {5}</textarea>
 <script src="palettes.js"></script>
 <script src="helpers.js"></script>
 <script src="layouts.js"></script>
+<script src="ack-page.js"></script>
 <script src="index-page.js"></script>
 <script src="lined-page.js"></script>
 <script src="pdf.js"></script>
