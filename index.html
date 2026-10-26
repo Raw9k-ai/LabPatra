@@ -13,14 +13,18 @@
     <p>Pick a design, fill in your details, download a PNG or PDF. Everything is drawn on your device and nothing is uploaded.</p>
 </header>
 
+<nav class="site-nav" aria-label="Sections">
+    <div class="site-nav-inner">
+        <a href="#cover" data-view="cover">Front<span class="long"> page</span></a>
+        <a href="#index" data-view="index">Index</a>
+        <a href="#writing" data-view="writing">Writing<span class="long"> pages</span></a>
+        <a href="#batch" data-view="batch">Batch</a>
+    </div>
+</nav>
+
 <main class="app">
 
     <section class="stage" aria-label="Preview">
-        <div class="page-tabs" role="group" aria-label="Page to preview">
-            <button class="tab" type="button" data-page="cover" aria-pressed="true">Cover</button>
-            <button class="tab" type="button" data-page="index" aria-pressed="false">Index</button>
-            <button class="tab" type="button" data-page="lined" aria-pressed="false">Writing</button>
-        </div>
         <div class="sheet">
             <canvas id="preview" width="1024" height="1536" role="img" aria-label="Cover page preview"></canvas>
         </div>
@@ -37,6 +41,8 @@
     </section>
 
     <section class="panel">
+
+        <div class="view" data-view="cover">
 
         <div class="heading-row">
             <h2>Pick a design</h2>
@@ -120,7 +126,11 @@ BATCH- (2026-2030)</textarea>
             </div>
         </details>
 
-        <div class="heading-row details-heading">
+        <p class="next-step">Need more pages? Use <a href="#index">Index</a>, <a href="#writing">Writing pages</a> or <a href="#batch">Batch</a> in the menu above.</p>
+        </div>
+
+        <div class="view" data-view="index">
+        <div class="heading-row">
             <h2>Index page</h2>
         </div>
         <p class="hint index-hint">List your experiments. Blank numbered rows are added up to 15, so you can fill the rest by hand.</p>
@@ -130,7 +140,10 @@ BATCH- (2026-2030)</textarea>
             <label class="check"><input type="checkbox" id="includeIndex" checked> Include index in PDF</label>
         </div>
 
-        <div class="heading-row details-heading">
+        </div>
+
+        <div class="view" data-view="writing">
+        <div class="heading-row">
             <h2>Writing pages</h2>
         </div>
         <p class="hint index-hint">Blank ruled or graph pages in your cover's colours, added to the PDF after the index.</p>
@@ -150,7 +163,10 @@ BATCH- (2026-2030)</textarea>
         <label class="check"><input type="checkbox" id="linedHeader" checked> Experiment header (No., Date, Aim)</label>
         <label class="check"><input type="checkbox" id="linedNumbers" checked> Number the pages</label>
 
-        <div class="heading-row details-heading">
+        </div>
+
+        <div class="view" data-view="batch">
+        <div class="heading-row">
             <h2>Batch: many students</h2>
         </div>
         <p class="hint index-hint">One student per line, columns separated by commas (a CSV file works too, and its heading row is skipped). You get one PDF with a cover page for every student (up to 100).</p>
@@ -173,6 +189,8 @@ BATCH- {5}</textarea>
             <button class="btn" id="downloadBatch" type="button">Download batch PDF</button>
         </div>
         <p class="hint" id="batchStatus" role="status"></p>
+
+        </div>
 
         <div class="heading-row details-heading">
             <h2>Saved on this device</h2>

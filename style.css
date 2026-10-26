@@ -7,7 +7,8 @@
     --muted: #4B5E7E;
     --border: #B4C2D5;
     --highlight: #FFE85A;
-    --preview-max-height: calc(100vh - 170px);
+    --preview-max-height: calc(100vh - 230px);
+    --nav-h: 52px;
 }
 
 * {
@@ -76,30 +77,8 @@ h2 {
 
 .stage {
     position: sticky;
-    top: 18px;
+    top: calc(var(--nav-h) + 18px);
 }
-
-.page-tabs {
-    display: flex;
-    gap: 0;
-    margin: 0 0 10px;
-}
-
-.tab {
-    all: unset;
-    flex: 1;
-    padding: 7px 10px;
-    text-align: center;
-    font-weight: 600;
-    cursor: pointer;
-    background: #fff;
-    border: 1.5px solid var(--ink);
-}
-
-.tab:first-child { border-radius: 8px 0 0 8px; }
-.tab:last-child { border-radius: 0 8px 8px 0; border-left: 0; }
-.tab[aria-pressed="true"] { background: var(--highlight); }
-.tab:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 
 .sheet {
     display: flex;
@@ -359,7 +338,7 @@ details .two-columns {
 
 @media (max-width: 900px) {
     :root {
-        --preview-max-height: calc(44vh - 20px);
+        --preview-max-height: calc(40vh - 20px);
     }
 
     .site-header {
@@ -381,7 +360,7 @@ details .two-columns {
 
     /* preview stays pinned to the top while the form scrolls underneath */
     .stage {
-        top: 0;
+        top: var(--nav-h);
         z-index: 5;
         padding: 10px 12px;
         border-bottom: 1px solid var(--border);
@@ -475,3 +454,87 @@ details .two-columns {
 }
 
 #resetSaved { color: #9A2A1F; }
+
+
+/* ---------- navigation and views ---------- */
+
+.site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    height: var(--nav-h);
+    background: #fff;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+
+.site-nav-inner {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    height: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.site-nav a {
+    padding: 7px 14px;
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+.site-nav a:hover {
+    background: #F1F5FA;
+}
+
+.site-nav a[aria-current="page"] {
+    background: var(--highlight);
+    box-shadow: inset 0 0 0 1.5px var(--ink);
+}
+
+.view {
+    display: none;
+}
+
+.view.active {
+    display: block;
+}
+
+.next-step {
+    margin: 26px 0 0;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--muted);
+}
+
+.next-step a {
+    font-weight: 600;
+    color: var(--ink);
+}
+
+/* the batch page has its own download button */
+body[data-view="batch"] .download-bar {
+    display: none;
+}
+
+@media (max-width: 900px) {
+    .site-nav-inner {
+        gap: 2px;
+        padding: 0 8px;
+    }
+
+    .site-nav .long {
+        display: none;
+    }
+
+    .site-nav a {
+        flex: 1;
+        padding: 8px 4px;
+        font-size: 14px;
+        text-align: center;
+    }
+}

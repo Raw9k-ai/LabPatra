@@ -13,9 +13,16 @@ Choose a layout, customize the details, explore different color palettes, previe
 - 🏫 College Branding: Include college details and a logo to personalize your design.
 - ✏️ Easy Customization: Enter the information needed for your lab manual.
 - 👀 Live Preview: See your design before downloading it.
-- 📥 Download Your Design: Export your completed cover page.
+- 📥 Download Your Design: Export your completed cover page as a PNG.
+- 📄 PDF Export: Download an A4 PDF with the cover and the index page.
+- 🗂️ Experiment Index Page: A matching index table (No., Title, Date, Page, Remark) in the same palette as your cover.
+- 📝 Writing Pages: Ruled or graph pages with an optional Experiment No./Date/Aim header and page numbers, added after the index in the PDF.
+- 👥 Batch Mode: Paste or load a CSV of students and download one PDF with a cover page for each (up to 100).
+- 💾 Saved On Your Device: Your details, design, and logo are remembered in your browser. Nothing is uploaded.
 - ⚡ No Installation Required: Runs directly in your browser.
 - 🌐 Lightweight and Accessible: No build process, server, or external dependencies required for basic use.
+
+🧭 Navigation: The front page cover maker opens first. Index, Writing pages, and Batch each have their own page in the menu bar (deep links like `#index` work).
 
 🚀 Getting Started
 
@@ -65,6 +72,9 @@ LabPatra/
 ├── app.js              # Application logic and interactions
 ├── helpers.js          # Drawing and utility functions
 ├── layouts.js          # Cover page layout designs
+├── index-page.js        # Experiment index page layout
+├── lined-page.js        # Ruled / graph writing pages
+├── pdf.js               # Minimal PDF writer (no libraries)
 ├── logo.js             # Default college logo
 ├── palettes.js         # Color palette definitions
 ├── 1789061596402.png   # Project image asset
@@ -110,8 +120,8 @@ Potential enhancements include:
 - Additional cover page templates.
 - More customizable fonts and typography.
 - More options for college branding.
-- Additional export formats.
-- Saving and reusing custom designs.
+- Custom colour picker and font choices.
+- Shareable links with prefilled details.
 
 📄 License
 

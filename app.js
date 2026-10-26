@@ -19,7 +19,7 @@ const STORAGE_KEY = 'labpatra:v1';
 const STORAGE_LOGO_KEY = 'labpatra:logo';
 
 let currentDesign = 0;
-let currentPage = 'cover';   // 'cover' or 'index'
+let currentPage = 'cover';   // page being previewed: 'cover', 'index' or 'lined'
 let logoImage = null;
 let logoState = 'default';   // 'default', 'custom' or 'none'
 let rows = [
@@ -411,8 +411,6 @@ function buildRows() {
             input.value = row[f[0]];
             input.addEventListener('input', function () {
                 row[f[0]] = input.value.trim();
-                currentPage = 'index';
-                syncTabs();
                 refresh();
             });
             wrap.appendChild(input);
@@ -434,11 +432,29 @@ function buildRows() {
     });
 }
 
-function syncTabs() {
-    document.querySelectorAll('.tab').forEach(function (tab) {
-        tab.setAttribute('aria-pressed', tab.dataset.page === currentPage);
+// which page each menu item previews
+const VIEW_PAGE = { cover: 'cover', index: 'index', writing: 'lined', batch: 'cover' };
+
+function showView(name, scrollToTop) {
+    if (!VIEW_PAGE[name]) name = 'cover';
+    currentPage = VIEW_PAGE[name];
+    document.body.dataset.view = name;
+
+    document.querySelectorAll('.view').forEach(function (view) {
+        view.classList.toggle('active', view.dataset.view === name);
     });
+    document.querySelectorAll('.site-nav a').forEach(function (link) {
+        if (link.dataset.view === name) link.setAttribute('aria-current', 'page');
+        else link.removeAttribute('aria-current');
+    });
+
+    drawPreview();
+    if (scrollToTop) window.scrollTo(0, 0);
 }
+
+window.addEventListener('hashchange', function () {
+    showView(location.hash.slice(1), true);
+});
 
 
 /* ---------- saving on this device ---------- */
@@ -586,13 +602,9 @@ document.getElementById('downloadPdf').addEventListener('click', downloadPdf);
 document.getElementById('includeIndex').addEventListener('change', scheduleSave);
 document.getElementById('linedCount').addEventListener('input', scheduleSave);
 
-// changing the writing-page options shows that page
+// redraw the preview when a writing-page option changes
 ['linedStyle', 'linedHeader', 'linedNumbers'].forEach(function (id) {
-    document.getElementById(id).addEventListener('change', function () {
-        currentPage = 'lined';
-        syncTabs();
-        refresh();
-    });
+    document.getElementById(id).addEventListener('change', refresh);
 });
 
 ['batchList', 'batchTemplate'].forEach(function (id) {
@@ -623,19 +635,9 @@ document.getElementById('batchFile').addEventListener('change', function (event)
 });
 document.getElementById('downloadBatch').addEventListener('click', downloadBatch);
 
-document.querySelectorAll('.tab').forEach(function (tab) {
-    tab.addEventListener('click', function () {
-        currentPage = tab.dataset.page;
-        syncTabs();
-        drawPreview();
-    });
-});
-
 document.getElementById('addRow').addEventListener('click', function () {
     rows.push({ title: '', date: '', page: '', remark: '' });
     buildRows();
-    currentPage = 'index';
-    syncTabs();
     refresh();
     const inputs = rowsBox.querySelectorAll('.exp-title');
     inputs[inputs.length - 1].focus();
@@ -657,6 +659,7 @@ restoreState();
 buildGrid();
 buildRows();
 updateBatchSummary();
+showView(location.hash.slice(1), false);
 
 if (!restoreLogo()) {
     const startLogo = new Image();
