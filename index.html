@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LabPatra</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+    <h1>LABPATRA</h1>
+    <p>Pick a design, fill in your details, download a PNG or PDF. Everything is drawn on your device and nothing is uploaded.</p>
+</header>
+
+<main class="app">
+
+    <section class="stage" aria-label="Preview">
+        <div class="page-tabs" role="group" aria-label="Page to preview">
+            <button class="tab" type="button" data-page="cover" aria-pressed="true">Cover</button>
+            <button class="tab" type="button" data-page="index" aria-pressed="false">Index</button>
+            <button class="tab" type="button" data-page="lined" aria-pressed="false">Writing</button>
+        </div>
+        <div class="sheet">
+            <canvas id="preview" width="1024" height="1536" role="img" aria-label="Cover page preview"></canvas>
+        </div>
+        <div class="download-bar">
+            <select id="size" aria-label="Image size">
+                <option value="1024|1.5">2:3 · 1024×1536</option>
+                <option value="2048|1.5">2:3 HD · 2048×3072</option>
+                <option value="1240|1.41421">A4 · 1240×1754</option>
+                <option value="2480|1.41421">A4 print · 2480×3508</option>
+            </select>
+            <button class="btn primary" id="download" type="button">Download PNG</button>
+            <button class="btn primary" id="downloadPdf" type="button">Download PDF</button>
+        </div>
+    </section>
+
+    <section class="panel">
+
+        <div class="heading-row">
+            <h2>Pick a design</h2>
+            <button class="text-button" id="shuffle" type="button">Shuffle</button>
+        </div>
+        <div class="grid" id="grid" role="group" aria-label="Designs"></div>
+
+        <div class="heading-row details-heading">
+            <h2>Your details</h2>
+        </div>
+
+        <div class="field">
+            <label for="title">Document title</label>
+            <input type="text" id="title" value="Lab Manual" autocomplete="off">
+        </div>
+        <div class="field">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" value="Programming for Problem Solving" autocomplete="off">
+        </div>
+        <div class="field">
+            <label for="college">College or school</label>
+            <input type="text" id="college" value="KK College of Engineering &amp; Management" autocomplete="off">
+        </div>
+        <div class="field">
+            <label for="address">Address</label>
+            <input type="text" id="address" value="Nairo, Bagsuma, Govindpur, Dhanbad, Jharkhand-828109" autocomplete="off">
+        </div>
+        <div class="field">
+            <label for="dept">Department</label>
+            <input type="text" id="dept" value="Department of Computer Science Engineering" autocomplete="off">
+        </div>
+
+        <div class="two-columns">
+            <div class="field">
+                <label for="toBody">Submitted to</label>
+                <textarea id="toBody" rows="4">Mr. Abhishek Raj Vats</textarea>
+                <p class="hint">One line per row</p>
+            </div>
+            <div class="field">
+                <label for="byBody">Submitted by</label>
+                <textarea id="byBody" rows="4">SUPRIYA 
+ROLL- 51 
+BRANCH- CSE 
+SEMESTER-1ST
+BATCH- (2026-2030)</textarea>
+                <p class="hint">Up to 6 lines fit</p>
+            </div>
+        </div>
+
+        <div class="field">
+            <span class="label">Logo</span>
+            <div class="file-row">
+                <input type="file" id="logoFile" accept="image/*">
+                <label class="btn" for="logoFile">Upload logo</label>
+                <button class="text-button" id="logoClear" type="button">Remove logo</button>
+            </div>
+            <p class="hint">Without a logo, a monogram of the college name is drawn.</p>
+        </div>
+
+        <div class="field">
+            <span class="label">Background photo</span>
+            <div class="file-row">
+                <input type="file" id="photoFile" accept="image/*">
+                <label class="btn" for="photoFile">Add photo</label>
+                <button class="text-button" id="photoClear" type="button">Remove photo</button>
+            </div>
+            <p class="hint">Shown faded behind the lower part of the page, like a campus picture.</p>
+        </div>
+
+        <details>
+            <summary>Change the two column headings</summary>
+            <div class="two-columns">
+                <div>
+                    <label for="toHeading">Left heading</label>
+                    <input type="text" id="toHeading" value="Submitted to" autocomplete="off">
+                </div>
+                <div>
+                    <label for="byHeading">Right heading</label>
+                    <input type="text" id="byHeading" value="Submitted by" autocomplete="off">
+                </div>
+            </div>
+        </details>
+
+        <div class="heading-row details-heading">
+            <h2>Index page</h2>
+        </div>
+        <p class="hint index-hint">List your experiments. Blank numbered rows are added up to 15, so you can fill the rest by hand.</p>
+        <div id="rows"></div>
+        <div class="file-row index-actions">
+            <button class="btn" id="addRow" type="button">Add experiment</button>
+            <label class="check"><input type="checkbox" id="includeIndex" checked> Include index in PDF</label>
+        </div>
+
+        <div class="heading-row details-heading">
+            <h2>Writing pages</h2>
+        </div>
+        <p class="hint index-hint">Blank ruled or graph pages in your cover's colours, added to the PDF after the index.</p>
+        <div class="two-columns">
+            <div class="field">
+                <label for="linedStyle">Paper</label>
+                <select id="linedStyle">
+                    <option value="ruled">Ruled</option>
+                    <option value="grid">Graph (grid)</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="linedCount">Pages in PDF</label>
+                <input type="number" id="linedCount" min="0" max="30" value="2" inputmode="numeric">
+            </div>
+        </div>
+        <label class="check"><input type="checkbox" id="linedHeader" checked> Experiment header (No., Date, Aim)</label>
+        <label class="check"><input type="checkbox" id="linedNumbers" checked> Number the pages</label>
+
+        <div class="heading-row details-heading">
+            <h2>Batch: many students</h2>
+        </div>
+        <p class="hint index-hint">One student per line, columns separated by commas (a CSV file works too, and its heading row is skipped). You get one PDF with a cover page for every student (up to 100).</p>
+        <div class="field">
+            <label for="batchList">Students</label>
+            <textarea id="batchList" rows="6" placeholder="Supriya, 51, CSE, 1ST, 2026-2030&#10;Rahul, 52, CSE, 1ST, 2026-2030"></textarea>
+        </div>
+        <div class="field">
+            <label for="batchTemplate">Lines on each cover</label>
+            <textarea id="batchTemplate" rows="5">{1}
+ROLL- {2}
+BRANCH- {3}
+SEMESTER- {4}
+BATCH- {5}</textarea>
+            <p class="hint">{1} is the first column, {2} the second, and so on. A line is left out if its column is empty. Everything else (college, subject, design) comes from the form above.</p>
+        </div>
+        <div class="file-row">
+            <input type="file" id="batchFile" accept=".csv,.txt,text/csv,text/plain">
+            <label class="btn" for="batchFile">Load CSV file</label>
+            <button class="btn" id="downloadBatch" type="button">Download batch PDF</button>
+        </div>
+        <p class="hint" id="batchStatus" role="status"></p>
+
+        <div class="heading-row details-heading">
+            <h2>Saved on this device</h2>
+        </div>
+        <p class="hint">Your details, design and logo are remembered in this browser. Nothing is uploaded.</p>
+        <button class="text-button" id="resetSaved" type="button">Reset everything</button>
+
+        <p id="message" role="status"></p>
+    </section>
+
+</main>
+
+<script src="logo.js"></script>
+<script src="palettes.js"></script>
+<script src="helpers.js"></script>
+<script src="layouts.js"></script>
+<script src="index-page.js"></script>
+<script src="lined-page.js"></script>
+<script src="pdf.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
